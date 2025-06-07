@@ -14,7 +14,7 @@ and searching for solutions in the existing open and closed issues.
 ## Security
 
 If you've found a security issue in one of our open source projects,
-please <a href="https://github.com/detrash/recy-network/issues/new?assignees=&labels=type%3A+bug&template=bug_report.yml&title=%F0%9F%90%9B+Bug+Report%3A+">report it at</a> you may even
+please report it at you may even
 make some token!
 
 ## Code of Conduct
