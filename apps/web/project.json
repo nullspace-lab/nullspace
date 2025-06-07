@@ -1,0 +1,59 @@
+{
+  "name": "web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/web/src",
+
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm dev",
+        "cwd": "apps/web",
+        "parallel": false
+      }
+    },
+
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm dev:web",
+        "cwd": "apps/web"
+      }
+    },
+
+    "db": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm dev:db",
+        "cwd": "apps/web"
+      }
+    },
+
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["dist/apps/web"],
+      "options": {
+        "command": "pnpm build",
+        "cwd": "apps/web"
+      }
+    },
+
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm start",
+        "cwd": "apps/web"
+      }
+    },
+
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  },
+
+  "tags": []
+}
