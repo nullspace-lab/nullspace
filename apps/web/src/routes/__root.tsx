@@ -1,29 +1,39 @@
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools/production';
+/// <reference types="vite/client" />
 import {
+  HeadContent,
   Link,
   Outlet,
-  createRootRouteWithContext,
-  useRouterState,
-  HeadContent,
   Scripts,
+  createRootRoute,
+  useRouterState,
 } from '@tanstack/react-router';
+import { Avatar } from '@base-ui-components/react/avatar';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { createServerFn } from '@tanstack/react-start';
 import * as React from 'react';
-import { Toaster } from 'react-hot-toast';
-import type { QueryClient } from '@tanstack/react-query';
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
-import { Home, X } from 'lucide-react';
-import { IconLink } from '~/components/IconLink';
 import { NotFound } from '~/components/NotFound';
 import appCss from '~/styles/app.css?url';
 import { seo } from '~/utils/seo';
-import { Loader } from '~/components/Loader';
-import { Avatar } from '@base-ui-components/react/avatar';
+import { Home, LogIn } from 'lucide-react';
+import { getSupabaseServerClient } from '../utils/supabase';
+import { Toaster } from 'react-hot-toast';
 import { cn } from '~/utils/tailwind';
 
-export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient;
-}>()({
+const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
+  const supabase = getSupabaseServerClient();
+  const { data, error: _error } = await supabase.auth.getUser();
+
+  if (!data.user?.email) {
+    return null;
+  }
+
+  return {
+    email: data.user.email,
+  };
+});
+
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
@@ -62,6 +72,13 @@ export const Route = createRootRouteWithContext<{
       { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
+  beforeLoad: async () => {
+    const user = await fetchUser();
+
+    return {
+      user,
+    };
+  },
   errorComponent: (props) => {
     return (
       <RootDocument>
@@ -82,7 +99,8 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const { user } = Route.useRouteContext();
 
   return (
     <html>
@@ -92,14 +110,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <main className="h-screen flex flex-col min-h-0 root">
           <div className="flex h-screen bg-gray-900">
-            {/* Mobile sidebar overlay */}
-            {sidebarOpen && (
-              <div
-                className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
-                onClick={() => setSidebarOpen(false)}
-              />
-            )}
-
             {/* Sidebar */}
             <div
               className={cn(
@@ -115,29 +125,26 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 {/* Sidebar header */}
                 <div className="flex items-center justify-between p-4 border-r border-slate-700">
                   <div className="flex items-center space-x-3">
-                    <img
-                      src="./public/brand/nullspace-logo.svg"
-                      alt="Nullspace Logo"
-                    />
+                    <Link to="/">
+                      <img
+                        src="./brand/nullspace-logo.svg"
+                        alt="Nullspace Logo"
+                      />
+                    </Link>
                   </div>
-                  <Avatar.Root className="inline-flex size-10 items-center justify-center overflow-hidden rounded-full bg-slate-600 align-middle text-base font-medium text-black select-none">
-                    <Avatar.Image
-                      src="https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=128&h=128&dpr=2&q=80"
-                      width="48"
-                      height="48"
-                      className="size-full object-cover"
-                    />
-                    <Avatar.Fallback className="flex size-full items-center justify-center text-base">
-                      LT
-                    </Avatar.Fallback>
-                  </Avatar.Root>
-                  {/* Mobile close button */}
-                  <button
-                    onClick={() => setSidebarOpen(false)}
-                    className="lg:hidden text-white hover:text-gray-300"
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
+                  {user && (
+                    <Avatar.Root className="inline-flex size-10 items-center justify-center overflow-hidden rounded-full bg-slate-600 align-middle text-base font-medium text-black select-none">
+                      <Avatar.Image
+                        src="https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=128&h=128&dpr=2&q=80"
+                        width="48"
+                        height="48"
+                        className="size-full object-cover"
+                      />
+                      <Avatar.Fallback className="flex size-full items-center justify-center text-base">
+                        <span>{user ? user?.email?.charAt(0).toUpperCase() || 'U' : null}</span>
+                      </Avatar.Fallback>
+                    </Avatar.Root>
+                  )}
                 </div>
 
                 {/* Navigation */}
@@ -146,6 +153,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                     <li>
                       <Link
                         to="/"
+                        activeProps={{
+                          className: 'font-bold bg-slate-700',
+                        }}
+                        activeOptions={{ exact: true }}
                         className="flex items-center space-x-3 px-3 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors duration-200"
                         onClick={() => setSidebarOpen(false)}
                       >
@@ -153,17 +164,38 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                         <span>Home</span>
                       </Link>
                     </li>
-                    {/* Add more navigation items here */}
+                    <li>
+                      <Link
+                        to="/posts"
+                        activeProps={{
+                          className: 'font-bold bg-slate-700',
+                        }}
+                        className="flex items-center space-x-3 px-3 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors duration-200"
+                      >
+                        <Home className="w-5 h-5" />
+                        <span>Posts</span>
+                      </Link>
+                    </li>
                   </ul>
+
+                  {!user && (
+                    <div className="border-t pt-4 border-slate-700 mt-4">
+                      <Link
+                        to="/login"
+                        className="flex  justify-center items-center space-x-3 px-3 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors duration-200 border"
+                        onClick={() => setSidebarOpen(false)}
+                      >
+                        <LogIn className="w-5 h-5" />
+                        <span className="uppercase">Sign In</span>
+                      </Link>
+                    </div>
+                  )}
                 </nav>
               </div>
             </div>
 
-            {/* Main content */}
             <div className="flex-1 flex flex-col min-w-0 bg-slate-800">
-              {/* Main content area */}
               <main className="flex-1 overflow-auto">
-                <LoadingIndicator />
                 <div className="h-full p-6">{children}</div>
               </main>
             </div>
@@ -171,23 +203,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
           <Toaster />
         </main>
-        <ReactQueryDevtools />
+
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
     </html>
-  );
-}
-
-function LoadingIndicator() {
-  const isLoading = useRouterState({ select: (s) => s.isLoading });
-  return (
-    <div
-      className={`h-12 transition-all duration-300 ${
-        isLoading ? `opacity-100 delay-300` : `opacity-0 delay-0`
-      }`}
-    >
-      <Loader />
-    </div>
   );
 }

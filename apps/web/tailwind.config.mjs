@@ -52,6 +52,9 @@ export default {
           5: 'hsl(var(--chart-5))',
         },
       },
+      backgroundImage: {
+        'ns-gradient': 'linear-gradient(90deg, #1D2541 0%, #0B142B 100%)',
+      },
     },
   },
 };

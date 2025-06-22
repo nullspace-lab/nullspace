@@ -1,4 +1,6 @@
 node_modules
+# Keep environment variables out of version control
+!.env
 package-lock.json
 yarn.lock
 
@@ -7,21 +9,12 @@ yarn.lock
 .env
 .vercel
 .output
-.vinxi
-
 /build/
 /api/
 /server/build
-/public/build
-.vinxi
-# Sentry Config File
+/public/build# Sentry Config File
 .env.sentry-build-plugin
-
-.env.local
-
-
-
-.nx/cache
-.nx/workspace-data
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

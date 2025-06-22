@@ -9,13 +9,14 @@ export type PostType = {
 }
 
 export const fetchPost = createServerFn({ method: 'GET' })
-  .validator((postId: string) => postId)
-  .handler(async ({ data }) => {
-    console.info(`Fetching post with id ${data}...`)
+  .validator((d: string) => d)
+  .handler(async ({ data: postId }) => {
+    console.info(`Fetching post with id ${postId}...`)
     const post = await axios
-      .get<PostType>(`https://jsonplaceholder.typicode.com/posts/${data}`)
+      .get<PostType>(`https://jsonplaceholder.typicode.com/posts/${postId}`)
       .then((r) => r.data)
       .catch((err) => {
+        console.error(err)
         if (err.status === 404) {
           throw notFound()
         }
@@ -28,6 +29,7 @@ export const fetchPost = createServerFn({ method: 'GET' })
 export const fetchPosts = createServerFn({ method: 'GET' }).handler(
   async () => {
     console.info('Fetching posts...')
+    await new Promise((r) => setTimeout(r, 1000))
     return axios
       .get<Array<PostType>>('https://jsonplaceholder.typicode.com/posts')
       .then((r) => r.data.slice(0, 10))

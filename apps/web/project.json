@@ -3,57 +3,27 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/web/src",
-
+  "root": "apps/web",
   "targets": {
-    "dev": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpm dev",
-        "cwd": "apps/web",
-        "parallel": false
-      }
-    },
-
-    "serve": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpm dev:web",
-        "cwd": "apps/web"
-      }
-    },
-
-    "db": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpm dev:db",
-        "cwd": "apps/web"
-      }
-    },
-
     "build": {
-      "executor": "nx:run-commands",
-      "outputs": ["dist/apps/web"],
+      "executor": "@nx/vite:build",
       "options": {
-        "command": "pnpm build",
-        "cwd": "apps/web"
+        "outputPath": "dist/apps/web",
+        "configFile": "apps/web/vite.config.ts"
       }
     },
-
-    "start": {
-      "executor": "nx:run-commands",
+    "serve": {
+      "executor": "@nx/vite:dev-server",
       "options": {
-        "command": "pnpm start",
-        "cwd": "apps/web"
+        "configFile": "apps/web/vite.config.ts"
       }
     },
-
-    "lint": {
-      "executor": "@nx/eslint:lint",
+    "typecheck": {
+      "executor": "@nx/js:tsc",
       "options": {
-        "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx}"]
+        "project": "apps/web/tsconfig.app.json"
       }
     }
   },
-
   "tags": []
 }
