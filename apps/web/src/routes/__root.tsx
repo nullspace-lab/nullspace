@@ -1,39 +1,38 @@
 /// <reference types="vite/client" />
 import {
   HeadContent,
-  Link,
   Outlet,
   Scripts,
-  createRootRoute,
-  useRouterState,
+  createRootRouteWithContext,
 } from '@tanstack/react-router';
-import { Avatar } from '@base-ui-components/react/avatar';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import type { QueryClient } from '@tanstack/react-query';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { createServerFn } from '@tanstack/react-start';
 import * as React from 'react';
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
 import { NotFound } from '~/components/NotFound';
 import appCss from '~/styles/app.css?url';
 import { seo } from '~/utils/seo';
-import { Home, LogIn } from 'lucide-react';
-import { getSupabaseServerClient } from '../utils/supabase';
 import { Toaster } from 'react-hot-toast';
-import { cn } from '~/utils/tailwind';
+import { AuthProvider } from '~/contexts/auth';
+import { getSupabaseServerClient } from '~/utils/supabase';
+import { createServerFn } from '@tanstack/react-start';
+import { Sidebar } from '~/components/Sidebar';
 
 const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
   const supabase = getSupabaseServerClient();
-  const { data, error: _error } = await supabase.auth.getUser();
-
-  if (!data.user?.email) {
-    return null;
-  }
+  const { data } = await supabase.auth.getUser();
+  if (!data.user?.email) return null;
 
   return {
+    id: data.user.id,
     email: data.user.email,
+    user_metadata: data.user.user_metadata,
   };
 });
-
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
   head: () => ({
     meta: [
       {
@@ -44,9 +43,8 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title:
-          'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+        title: 'Nullspace | Starting from zero is just the beginning. 🪐',
+        description: `Welcome to Nullspace. `,
       }),
     ],
     links: [
@@ -72,13 +70,6 @@ export const Route = createRootRoute({
       { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
-  beforeLoad: async () => {
-    const user = await fetchUser();
-
-    return {
-      user,
-    };
-  },
   errorComponent: (props) => {
     return (
       <RootDocument>
@@ -86,124 +77,47 @@ export const Route = createRootRoute({
       </RootDocument>
     );
   },
+  beforeLoad: async () => {
+    const user = await fetchUser();
+    return {
+      initialUser: user,
+    };
+  },
   notFoundComponent: () => <NotFound />,
   component: RootComponent,
 });
 
 function RootComponent() {
+  const initialUser = Route.useRouteContext().initialUser;
+
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <AuthProvider initialUser={initialUser}>
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </AuthProvider>
   );
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
-  const { user } = Route.useRouteContext();
-
   return (
     <html>
       <head>
         <HeadContent />
       </head>
       <body>
-        <main className="h-screen flex flex-col min-h-0 root">
-          <div className="flex h-screen bg-gray-900">
-            {/* Sidebar */}
-            <div
-              className={cn(
-                `fixed inset-y-0 left-0 z-50 w-64 bg-slate-800 transform transition-transform duration-300 ease-in-out
-    lg:translate-x-0 lg:static lg:inset-0`,
-                {
-                  'translate-x-0': sidebarOpen,
-                  '-translate-x-full': !sidebarOpen,
-                },
-              )}
-            >
-              <div className="flex flex-col h-full">
-                {/* Sidebar header */}
-                <div className="flex items-center justify-between p-4 border-r border-slate-700">
-                  <div className="flex items-center space-x-3">
-                    <Link to="/">
-                      <img
-                        src="./brand/nullspace-logo.svg"
-                        alt="Nullspace Logo"
-                      />
-                    </Link>
-                  </div>
-                  {user && (
-                    <Avatar.Root className="inline-flex size-10 items-center justify-center overflow-hidden rounded-full bg-slate-600 align-middle text-base font-medium text-black select-none">
-                      <Avatar.Image
-                        src="https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=128&h=128&dpr=2&q=80"
-                        width="48"
-                        height="48"
-                        className="size-full object-cover"
-                      />
-                      <Avatar.Fallback className="flex size-full items-center justify-center text-base">
-                        <span>{user ? user?.email?.charAt(0).toUpperCase() || 'U' : null}</span>
-                      </Avatar.Fallback>
-                    </Avatar.Root>
-                  )}
-                </div>
-
-                {/* Navigation */}
-                <nav className="flex-1 px-4 py-3 border-r border-slate-700">
-                  <ul className="space-y-2 pt-4 border-t border-slate-700">
-                    <li>
-                      <Link
-                        to="/"
-                        activeProps={{
-                          className: 'font-bold bg-slate-700',
-                        }}
-                        activeOptions={{ exact: true }}
-                        className="flex items-center space-x-3 px-3 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors duration-200"
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        <Home className="w-5 h-5" />
-                        <span>Home</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/posts"
-                        activeProps={{
-                          className: 'font-bold bg-slate-700',
-                        }}
-                        className="flex items-center space-x-3 px-3 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors duration-200"
-                      >
-                        <Home className="w-5 h-5" />
-                        <span>Posts</span>
-                      </Link>
-                    </li>
-                  </ul>
-
-                  {!user && (
-                    <div className="border-t pt-4 border-slate-700 mt-4">
-                      <Link
-                        to="/login"
-                        className="flex  justify-center items-center space-x-3 px-3 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors duration-200 border"
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        <LogIn className="w-5 h-5" />
-                        <span className="uppercase">Sign In</span>
-                      </Link>
-                    </div>
-                  )}
-                </nav>
-              </div>
-            </div>
-
-            <div className="flex-1 flex flex-col min-w-0 bg-slate-800">
+        <main className="h-screen flex flex-col min-h-0 root bg-ns-gradient">
+          <div className="flex h-screen">
+            <Sidebar />
+            <div className="flex-1 flex flex-col min-w-0">
               <main className="flex-1 overflow-auto">
                 <div className="h-full p-6">{children}</div>
               </main>
             </div>
           </div>
-
           <Toaster />
         </main>
-
+        <ReactQueryDevtools buttonPosition="bottom-left" />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>

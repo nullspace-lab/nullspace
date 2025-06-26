@@ -1,57 +1,69 @@
+import type React from 'react';
+
 export function Auth({
   actionText,
   onSubmit,
   status,
   afterSubmit,
 }: {
-  actionText: string
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-  status: 'pending' | 'idle' | 'success' | 'error'
-  afterSubmit?: React.ReactNode
+  actionText: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  status: 'pending' | 'idle' | 'success' | 'error';
+  afterSubmit?: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 bg-white dark:bg-black flex items-start justify-center p-8">
-      <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">{actionText}</h1>
+    <div className="fixed inset-0 bg-slate-800  flex items-center justify-center p-8">
+      <div className="bg-slate-900 p-8 rounded-lg shadow-lg border border-slate-700 w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-white text-center">
+          {actionText}
+        </h1>
         <form
           onSubmit={(e) => {
-            e.preventDefault()
-            onSubmit(e)
+            e.preventDefault();
+            onSubmit(e);
           }}
           className="space-y-4"
         >
           <div>
-            <label htmlFor="email" className="block text-xs">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-white mb-2"
+            >
               Username
             </label>
             <input
               type="email"
               name="email"
               id="email"
-              className="px-2 py-1 w-full rounded border border-gray-500/20 bg-white dark:bg-gray-800"
+              className="px-3 py-2 w-full rounded-lg border border-slate-700 bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200"
+              placeholder="Enter your email"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-xs">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-white mb-2"
+            >
               Password
             </label>
             <input
               type="password"
               name="password"
               id="password"
-              className="px-2 py-1 w-full rounded border border-gray-500/20 bg-white dark:bg-gray-800"
+              className="px-3 py-2 w-full rounded-lg border border-slate-700 bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200"
+              placeholder="Enter your password"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-cyan-600 text-white rounded py-2 font-black uppercase"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-3 font-medium uppercase tracking-wide transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={status === 'pending'}
           >
-            {status === 'pending' ? '...' : actionText}
+            {status === 'pending' ? 'Loading...' : actionText}
           </button>
-          {afterSubmit ? afterSubmit : null}
+          {afterSubmit ? <div className="mt-4">{afterSubmit}</div> : null}
         </form>
       </div>
     </div>
-  )
+  );
 }

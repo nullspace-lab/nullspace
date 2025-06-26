@@ -53,7 +53,7 @@ export default {
         },
       },
       backgroundImage: {
-        'ns-gradient': 'linear-gradient(90deg, #1D2541 0%, #0B142B 100%)',
+        'ns-gradient': 'linear-gradient(90deg, #1E293B 0%, #0B142B 100%)',
       },
     },
   },

@@ -1,8 +1,9 @@
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import { defineConfig } from 'vite'
-import tsConfigPaths from 'vite-tsconfig-paths'
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import { defineConfig } from 'vite';
+import tsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  envPrefix: 'PUBLIC_',
   server: {
     port: 3000,
   },
@@ -12,4 +13,4 @@ export default defineConfig({
     }),
     tanstackStart(),
   ],
-})
+});
