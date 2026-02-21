@@ -72,13 +72,16 @@ export const Route = createRootRouteWithContext<{
   }),
   errorComponent: (props) => {
     return (
-      <RootDocument>
-        <DefaultCatchBoundary {...props} />
-      </RootDocument>
+      <AuthProvider initialUser={null}>
+        <RootDocument>
+          <DefaultCatchBoundary {...props} />
+        </RootDocument>
+      </AuthProvider>
     );
   },
   beforeLoad: async () => {
     const user = await fetchUser();
+
     return {
       initialUser: user,
     };
@@ -88,7 +91,7 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootComponent() {
-  const initialUser = Route.useRouteContext().initialUser;
+  const { initialUser } = Route.useRouteContext();
 
   return (
     <AuthProvider initialUser={initialUser}>

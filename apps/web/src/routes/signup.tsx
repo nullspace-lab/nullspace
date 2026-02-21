@@ -5,9 +5,7 @@ import { Auth } from '../components/Auth'
 import { getSupabaseServerClient } from '../utils/supabase'
 
 export const signupFn = createServerFn({ method: 'POST' })
-  .validator(
-    (d: { email: string; password: string; redirectUrl?: string }) => d,
-  )
+  .inputValidator((d: { email: string; password: string; redirectUrl?: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const { error } = await supabase.auth.signUp({

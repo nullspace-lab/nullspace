@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { Menu } from '@base-ui-components/react/menu';
-import { Avatar } from '@base-ui-components/react/avatar';
+import { Menu } from '@base-ui/react/menu';
+import { Avatar } from '@base-ui/react/avatar';
 import { ChevronUp, Home, LogIn, LogOut, Users } from 'lucide-react';
 import { HoverBorderGradient } from './ui/HoverBorderGradient';
 import * as React from 'react';
@@ -13,7 +13,6 @@ export function Sidebar() {
   const [openAuthDialog, setOpenAuthDialog] = React.useState(false);
 
   const { user, signOut } = useAuth();
-
 
   return (
     <>
@@ -120,7 +119,10 @@ export function Sidebar() {
             {!user && (
               <div className="border-t pt-4 border-slate-700 mt-4">
                 <HoverBorderGradient
-                  onClick={() => setOpenAuthDialog(true)}
+                  onClick={() => {
+                    console.log('Opening auth dialog');
+                    setOpenAuthDialog(true)
+                  }}
                   containerClassName="rounded-lg w-full"
                   as="button"
                   className="w-full flex justify-center items-center space-x-3 px-3 py-2 text-white rounded-lg transition-colors duration-200"
@@ -133,11 +135,12 @@ export function Sidebar() {
           </nav>
         </div>
 
-        <SignupDialog
-          open={openAuthDialog}
-          onOpenChange={() => setOpenAuthDialog(true)}
-        />
       </div>
+
+      <SignupDialog
+        open={openAuthDialog}
+        onOpenChange={setOpenAuthDialog}
+      />
     </>
   );
 }
