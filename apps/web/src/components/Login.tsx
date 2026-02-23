@@ -25,7 +25,7 @@ export function Login() {
 
   return (
     <Auth
-      actionText="Login"
+      actionText="Entrar"
       status={loginMutation.status}
       onSubmit={(e) => {
         const formData = new FormData(e.target as HTMLFormElement)
@@ -60,7 +60,7 @@ export function Login() {
                   }}
                   type="button"
                 >
-                  Sign up instead?
+                  Criar conta?
                 </button>
               </div>
             ) : null}

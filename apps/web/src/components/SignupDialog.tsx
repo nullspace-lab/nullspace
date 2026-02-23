@@ -24,7 +24,10 @@ export function SignupDialog({
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 bg-black/60 transition-opacity" />
-        <Dialog.Popup className="fixed top-1/2 left-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-dark p-6 outline outline-1 outline-slate-700 shadow-input">
+        <Dialog.Popup className="fixed top-1/2 left-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-[#0B132B] p-6 outline outline-1 outline-slate-700 shadow-lg">
+          <Dialog.Title className="text-lg font-semibold text-white mb-4 text-center">
+            Entrar com
+          </Dialog.Title>
           <div className="flex flex-col space-y-4">
             <button
               onClick={handleGithubSignIn}

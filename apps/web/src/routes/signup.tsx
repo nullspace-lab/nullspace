@@ -36,7 +36,7 @@ function SignupComp() {
 
   return (
     <Auth
-      actionText="Sign Up"
+      actionText="Criar conta"
       status={signupMutation.status}
       onSubmit={(e) => {
         const formData = new FormData(e.target as HTMLFormElement)

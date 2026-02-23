@@ -29,14 +29,14 @@ export function Auth({
               htmlFor="email"
               className="block text-sm font-medium text-white mb-2"
             >
-              Username
+              E-mail
             </label>
             <input
               type="email"
               name="email"
               id="email"
               className="px-3 py-2 w-full rounded-lg border border-slate-700 bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200"
-              placeholder="Enter your email"
+              placeholder="Digite seu e-mail"
             />
           </div>
           <div>
@@ -44,14 +44,14 @@ export function Auth({
               htmlFor="password"
               className="block text-sm font-medium text-white mb-2"
             >
-              Password
+              Senha
             </label>
             <input
               type="password"
               name="password"
               id="password"
               className="px-3 py-2 w-full rounded-lg border border-slate-700 bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200"
-              placeholder="Enter your password"
+              placeholder="Digite sua senha"
             />
           </div>
           <button
@@ -59,7 +59,7 @@ export function Auth({
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-3 font-medium uppercase tracking-wide transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={status === 'pending'}
           >
-            {status === 'pending' ? 'Loading...' : actionText}
+            {status === 'pending' ? 'Carregando...' : actionText}
           </button>
           {afterSubmit ? <div className="mt-4">{afterSubmit}</div> : null}
         </form>

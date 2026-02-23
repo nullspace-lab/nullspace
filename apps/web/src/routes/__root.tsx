@@ -114,7 +114,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <Sidebar />
             <div className="flex-1 flex flex-col min-w-0">
               <main className="flex-1 overflow-auto">
-                <div className="h-full p-6">{children}</div>
+                <div className="h-full">{children}</div>
               </main>
             </div>
           </div>

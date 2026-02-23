@@ -75,7 +75,7 @@ export function Sidebar() {
                           className="flex select-none items-center gap-3 px-4 py-3 text-sm leading-5 outline-none transition-colors duration-150 data-[highlighted]:bg-slate-700 data-[highlighted]:text-white"
                         >
                           <LogOut className="h-4 w-4" />
-                          <span>Sign Out</span>
+                          <span>Sair</span>
                         </button>
                       </Menu.Item>
                     </Menu.Popup>
@@ -99,19 +99,19 @@ export function Sidebar() {
                   onClick={() => setSidebarOpen(false)}
                 >
                   <Home className="w-5 h-5" />
-                  <span>Home</span>
+                  <span>Início</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/circles"
+                  to="/community"
                   activeProps={{
                     className: 'bg-slate-700',
                   }}
                   className="flex items-center space-x-3 px-3 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors duration-200"
                 >
                   <Users className="h-5 w-5" />
-                  <span>Circles</span>
+                  <span>Comunidade</span>
                 </Link>
               </li>
             </ul>
@@ -128,7 +128,7 @@ export function Sidebar() {
                   className="w-full flex justify-center items-center space-x-3 px-3 py-2 text-white rounded-lg transition-colors duration-200"
                 >
                   <LogIn className="w-5 h-5" />
-                  <span className="uppercase">Sign In</span>
+                  <span className="uppercase">Entrar</span>
                 </HoverBorderGradient>
               </div>
             )}

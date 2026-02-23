@@ -25,8 +25,6 @@ export function HoverBorderGradient({
   const [hovered, setHovered] = useState(false)
   const [direction, setDirection] = useState<Direction>('TOP')
 
-  console.log('HoverBorderGradient hovered:', hovered)
-
   const rotateDirection = (current: Direction): Direction => {
     const dirs: Direction[] = ['TOP', 'LEFT', 'BOTTOM', 'RIGHT']
     const i = dirs.indexOf(current)
