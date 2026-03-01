@@ -20,9 +20,9 @@ export function SignupDialog({
   const handleGithubSignIn = async () => {
     setIsRedirecting(true);
 
-    const redirectTo = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+    const next = `${window.location.pathname}${window.location.search}`;
 
-    const { error } = await signInWithGithub(redirectTo);
+    const { error } = await signInWithGithub(next);
 
     // If redirect doesn't happen (error path), re-enable interaction.
     if (error) {

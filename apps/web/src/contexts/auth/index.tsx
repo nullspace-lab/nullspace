@@ -6,6 +6,7 @@ import {
   Session,
   User,
   AuthChangeEvent,
+  Provider,
 } from '@supabase/supabase-js';
 import { createBrowserClient } from '@supabase/ssr';
 
@@ -19,7 +20,8 @@ type AuthContextValue = {
     password: string,
   ) => Promise<AuthTokenResponsePassword>;
   authEvent?: AuthChangeEvent;
-  signInWithGithub: (redirectTo?: string) => Promise<OAuthResponse>;
+  signInWithOAuth: (provider: Provider, nextPath?: string) => Promise<OAuthResponse>;
+  signInWithGithub: (nextPath?: string) => Promise<OAuthResponse>;
   signOut: () => Promise<{ error: AuthError | null }>;
 };
 
@@ -29,6 +31,18 @@ const supabase = createBrowserClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
   import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
 );
+
+const getOAuthRedirectTo = (nextPath?: string) => {
+  if (typeof window === 'undefined') {
+    return '/auth/callback?next=%2F';
+  }
+
+  const fallbackNext = `${window.location.pathname}${window.location.search}`;
+  const rawNext = nextPath ?? fallbackNext;
+  const safeNext = rawNext.startsWith('/') ? rawNext : '/';
+
+  return `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}`;
+};
 
 export function AuthProvider({
   children,
@@ -71,14 +85,17 @@ export function AuthProvider({
   const signIn = async (email: string, password: string) =>
     supabase.auth.signInWithPassword({ email, password });
 
-  const signInWithGithub = async (redirectTo?: string) =>
+  const signInWithOAuth = async (provider: Provider, nextPath?: string) =>
     supabase.auth.signInWithOAuth({
-      provider: 'github',
+      provider,
       options: {
-        redirectTo: redirectTo ?? window.location.origin,
+        redirectTo: getOAuthRedirectTo(nextPath),
         scopes: 'read:user user:email',
       },
     });
+
+  const signInWithGithub = async (nextPath?: string) =>
+    signInWithOAuth('github', nextPath);
 
   const signOut = async () => {
     setSession(null);
@@ -92,6 +109,7 @@ export function AuthProvider({
       value={{
         session,
         signIn,
+        signInWithOAuth,
         signInWithGithub,
         signOut,
         user,
