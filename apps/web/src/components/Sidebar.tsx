@@ -47,7 +47,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
             <div className="flex min-w-0 items-center gap-3">
               <Link to="/" onClick={closeSidebar}>
                 <img
-                  src="./brand/nullspace-logo.svg"
+                  src="/brand/nullspace-logo.svg"
                   alt="Nullspace Logo"
                   className="h-8 w-auto"
                 />
@@ -81,19 +81,19 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                   </Menu.Trigger>
                   <Menu.Portal>
                     <Menu.Positioner className="z-50 outline-none" sideOffset={8}>
-                      <Menu.Popup className="origin-[var(--transform-origin)] min-w-[200px] rounded-lg bg-slate-800 py-3 text-white shadow-lg shadow-black/20 outline outline-1 outline-slate-700 transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0">
+                      <Menu.Popup className="origin-[var(--transform-origin)] min-w-[220px] rounded-xl border border-white/10 bg-slate-900/14 py-3 text-white backdrop-blur-lg transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0">
                         <Menu.Arrow className="data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180">
-                          <ChevronUp className="h-5 w-5 text-slate-800" />
+                          <ChevronUp className="h-5 w-5 text-white/20" />
                         </Menu.Arrow>
 
-                        <div className="border-b border-slate-700 px-4 py-3">
-                          <p className="text-sm font-medium">{user?.email}</p>
+                        <div className="border-b border-white/8 px-4 py-3">
+                          <p className="text-sm font-medium text-white/90">{user?.email}</p>
                         </div>
 
                         <Menu.Item>
                           <button
                             onClick={signOut}
-                            className="flex select-none items-center gap-3 px-4 py-3 text-sm leading-5 outline-none transition-colors duration-150 data-[highlighted]:bg-slate-700 data-[highlighted]:text-white"
+                            className="mx-2 flex w-[calc(100%-1rem)] select-none items-center gap-3 rounded-lg px-3 py-2.5 text-sm leading-5 text-white/90 outline-none transition-colors duration-150 data-[highlighted]:bg-white/8 data-[highlighted]:text-white"
                           >
                             <LogOut className="h-4 w-4" />
                             <span>Sair</span>

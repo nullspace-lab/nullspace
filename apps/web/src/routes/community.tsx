@@ -7,11 +7,11 @@ export const Route = createFileRoute('/community')({
 
 function RouteComponent() {
   const words = [
-    { text: 'Dev' },
+    { text: 'Desenvolvedores' },
     { text: 'não' },
-    { text: 'evolui' },
-    { text: 'sozinho.' },
-    { text: 'Evolui' },
+    { text: 'evoluem' },
+    { text: 'sozinhos.' },
+    { text: 'Evoluem' },
     { text: 'em' },
     { text: 'comunidade.', className: 'text-primary' },
   ]
@@ -20,7 +20,7 @@ function RouteComponent() {
     <section className="flex min-h-[calc(100dvh-8rem)] items-center justify-center">
       <div className="flex w-full max-w-5xl flex-col items-center justify-center p-6 text-center sm:p-10">
         <p className="mb-8 text-sm text-white/80 sm:text-base">
-          Código melhor, carreira mais forte e networking real entre devs.
+          Código melhor, carreira mais forte e networking real entre desenvolvedores.
         </p>
 
         <TypewriterEffect words={words} />

@@ -132,7 +132,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 </button>
                 <Link to="/" onClick={() => setSidebarOpen(false)}>
                   <img
-                    src="./brand/nullspace-logo.svg"
+                    src="/brand/nullspace-logo.svg"
                     alt="Nullspace Logo"
                     className="h-8 w-auto"
                   />

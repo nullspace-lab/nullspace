@@ -19,7 +19,7 @@ type AuthContextValue = {
     password: string,
   ) => Promise<AuthTokenResponsePassword>;
   authEvent?: AuthChangeEvent;
-  signInWithGithub: () => Promise<OAuthResponse>;
+  signInWithGithub: (redirectTo?: string) => Promise<OAuthResponse>;
   signOut: () => Promise<{ error: AuthError | null }>;
 };
 
@@ -42,16 +42,25 @@ export function AuthProvider({
   const [user, setUser] = useState<InitialUser | null>(initialUser ?? null);
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) return;
+      setSession(data.session);
+      setUser(data.session.user);
+    });
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setAuthEvent(event);
-      if (event === 'SIGNED_IN' && session) {
-        setSession(session);
-        setUser(session.user);
-      } else if (event === 'SIGNED_OUT') {
+      if (event === 'SIGNED_OUT') {
         setSession(null);
         setUser(null);
+        return;
+      }
+
+      if (session) {
+        setSession(session);
+        setUser(session.user);
       }
     });
     return () => {
@@ -62,13 +71,12 @@ export function AuthProvider({
   const signIn = async (email: string, password: string) =>
     supabase.auth.signInWithPassword({ email, password });
 
-  const signInWithGithub = async () =>
+  const signInWithGithub = async (redirectTo?: string) =>
     supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: redirectTo ?? window.location.origin,
         scopes: 'read:user user:email',
-        queryParams: { response_type: 'code' },
       },
     });
 

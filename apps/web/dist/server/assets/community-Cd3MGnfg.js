@@ -1,5 +1,5 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { a as cn } from "./router-CuoLvJMz.js";
+import { a as cn } from "./router-BXSAFwtv.js";
 import { useAnimate, useInView, stagger, motion } from "motion/react";
 import { useEffect } from "react";
 import "@tanstack/react-query";
@@ -21,6 +21,7 @@ import "clsx";
 import "tailwind-merge";
 import "@base-ui/react/dialog";
 import "@tabler/icons-react";
+import "zod";
 const TypewriterEffect = ({
   words,
   className,
@@ -98,15 +99,15 @@ const TypewriterEffect = ({
 };
 function RouteComponent() {
   const words = [{
-    text: "Dev"
+    text: "Desenvolvedores"
   }, {
     text: "não"
   }, {
-    text: "evolui"
+    text: "evoluem"
   }, {
-    text: "sozinho."
+    text: "sozinhos."
   }, {
-    text: "Evolui"
+    text: "Evoluem"
   }, {
     text: "em"
   }, {
@@ -114,7 +115,7 @@ function RouteComponent() {
     className: "text-primary"
   }];
   return /* @__PURE__ */ jsx("section", { className: "flex min-h-[calc(100dvh-8rem)] items-center justify-center", children: /* @__PURE__ */ jsxs("div", { className: "flex w-full max-w-5xl flex-col items-center justify-center p-6 text-center sm:p-10", children: [
-    /* @__PURE__ */ jsx("p", { className: "mb-8 text-sm text-white/80 sm:text-base", children: "Código melhor, carreira mais forte e networking real entre devs." }),
+    /* @__PURE__ */ jsx("p", { className: "mb-8 text-sm text-white/80 sm:text-base", children: "Código melhor, carreira mais forte e networking real entre desenvolvedores." }),
     /* @__PURE__ */ jsx(TypewriterEffect, { words }),
     /* @__PURE__ */ jsx("a", { href: "https://chat.whatsapp.com/GIrZlmjoAOqHMYeodJAcQs?mode=gi_t", target: "_blank", rel: "noreferrer", className: "mt-10 inline-flex h-11 min-w-56 items-center justify-center rounded-xl border border-primary/60 bg-primary/20 px-6 text-sm font-semibold text-white transition-colors hover:bg-primary/30", children: "Faça parte da comunidade" })
   ] }) });

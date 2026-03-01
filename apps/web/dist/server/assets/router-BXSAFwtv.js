@@ -16,6 +16,7 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Dialog } from "@base-ui/react/dialog";
 import { IconBrandGithub, IconBrandGoogle, IconBrandLinkedin } from "@tabler/icons-react";
+import { z } from "zod";
 const createSsrRpc = (functionId, importer) => {
   const url = "/_serverFn/" + functionId;
   const serverFnMeta = { id: functionId };
@@ -94,7 +95,7 @@ function NotFound({ children }) {
     ] })
   ] });
 }
-const appCss = "/assets/app-B7rkk_6q.css";
+const appCss = "/assets/app-CLtGygNK.css";
 const seo = ({
   title,
   description,
@@ -133,16 +134,23 @@ function AuthProvider({
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(initialUser ?? null);
   useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) return;
+      setSession(data.session);
+      setUser(data.session.user);
+    });
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((event, session2) => {
       setAuthEvent(event);
-      if (event === "SIGNED_IN" && session2) {
-        setSession(session2);
-        setUser(session2.user);
-      } else if (event === "SIGNED_OUT") {
+      if (event === "SIGNED_OUT") {
         setSession(null);
         setUser(null);
+        return;
+      }
+      if (session2) {
+        setSession(session2);
+        setUser(session2.user);
       }
     });
     return () => {
@@ -150,12 +158,11 @@ function AuthProvider({
     };
   }, []);
   const signIn = async (email, password) => supabase.auth.signInWithPassword({ email, password });
-  const signInWithGithub = async () => supabase.auth.signInWithOAuth({
+  const signInWithGithub = async (redirectTo) => supabase.auth.signInWithOAuth({
     provider: "github",
     options: {
-      redirectTo: window.location.origin,
-      scopes: "read:user user:email",
-      queryParams: { response_type: "code" }
+      redirectTo: redirectTo ?? window.location.origin,
+      scopes: "read:user user:email"
     }
   });
   const signOut = async () => {
@@ -191,9 +198,14 @@ function SignupDialog({
   onOpenChange
 }) {
   const { signInWithGithub } = useAuth();
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const handleGithubSignIn = async () => {
-    signInWithGithub();
-    onOpenChange(false);
+    setIsRedirecting(true);
+    const redirectTo = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+    const { error } = await signInWithGithub(redirectTo);
+    if (error) {
+      setIsRedirecting(false);
+    }
   };
   return /* @__PURE__ */ jsx(Dialog.Root, { open, onOpenChange, children: /* @__PURE__ */ jsxs(Dialog.Portal, { children: [
     /* @__PURE__ */ jsx(Dialog.Backdrop, { className: "fixed inset-0 bg-slate-950/45 transition-opacity" }),
@@ -204,11 +216,12 @@ function SignupDialog({
           "button",
           {
             onClick: handleGithubSignIn,
-            className: "group relative flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-white/10 bg-slate-900/12 px-4 font-medium text-white transition-colors duration-200 hover:border-ring/70 hover:bg-white/8",
+            disabled: isRedirecting,
+            className: "group relative flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-white/10 bg-slate-900/12 px-4 font-medium text-white transition-colors duration-200 hover:border-ring/70 hover:bg-white/8 disabled:cursor-not-allowed disabled:opacity-70",
             children: [
               /* @__PURE__ */ jsx(IconBrandGithub, { className: "h-6 w-6 text-neutral-300" }),
-              /* @__PURE__ */ jsx("span", { className: "text-sm text-neutral-300", children: "GitHub" }),
-              /* @__PURE__ */ jsx(BottomGradient, {})
+              /* @__PURE__ */ jsx("span", { className: "text-sm text-neutral-300", children: isRedirecting ? "Redirecionando..." : "GitHub" }),
+              !isRedirecting ? /* @__PURE__ */ jsx(BottomGradient, {}) : null
             ]
           }
         ),
@@ -279,7 +292,7 @@ function Sidebar({ open, onOpenChange }) {
             /* @__PURE__ */ jsx("div", { className: "flex min-w-0 items-center gap-3", children: /* @__PURE__ */ jsx(Link, { to: "/", onClick: closeSidebar, children: /* @__PURE__ */ jsx(
               "img",
               {
-                src: "./brand/nullspace-logo.svg",
+                src: "/brand/nullspace-logo.svg",
                 alt: "Nullspace Logo",
                 className: "h-8 w-auto"
               }
@@ -305,14 +318,14 @@ function Sidebar({ open, onOpenChange }) {
                     }
                   )
                 ] }) }) }),
-                /* @__PURE__ */ jsx(Menu.Portal, { children: /* @__PURE__ */ jsx(Menu.Positioner, { className: "z-50 outline-none", sideOffset: 8, children: /* @__PURE__ */ jsxs(Menu.Popup, { className: "origin-[var(--transform-origin)] min-w-[200px] rounded-lg bg-slate-800 py-3 text-white shadow-lg shadow-black/20 outline outline-1 outline-slate-700 transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0", children: [
-                  /* @__PURE__ */ jsx(Menu.Arrow, { className: "data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180", children: /* @__PURE__ */ jsx(ChevronUp, { className: "h-5 w-5 text-slate-800" }) }),
-                  /* @__PURE__ */ jsx("div", { className: "border-b border-slate-700 px-4 py-3", children: /* @__PURE__ */ jsx("p", { className: "text-sm font-medium", children: user?.email }) }),
+                /* @__PURE__ */ jsx(Menu.Portal, { children: /* @__PURE__ */ jsx(Menu.Positioner, { className: "z-50 outline-none", sideOffset: 8, children: /* @__PURE__ */ jsxs(Menu.Popup, { className: "origin-[var(--transform-origin)] min-w-[220px] rounded-xl border border-white/10 bg-slate-900/14 py-3 text-white backdrop-blur-lg transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0", children: [
+                  /* @__PURE__ */ jsx(Menu.Arrow, { className: "data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180", children: /* @__PURE__ */ jsx(ChevronUp, { className: "h-5 w-5 text-white/20" }) }),
+                  /* @__PURE__ */ jsx("div", { className: "border-b border-white/8 px-4 py-3", children: /* @__PURE__ */ jsx("p", { className: "text-sm font-medium text-white/90", children: user?.email }) }),
                   /* @__PURE__ */ jsx(Menu.Item, { children: /* @__PURE__ */ jsxs(
                     "button",
                     {
                       onClick: signOut,
-                      className: "flex select-none items-center gap-3 px-4 py-3 text-sm leading-5 outline-none transition-colors duration-150 data-[highlighted]:bg-slate-700 data-[highlighted]:text-white",
+                      className: "mx-2 flex w-[calc(100%-1rem)] select-none items-center gap-3 rounded-lg px-3 py-2.5 text-sm leading-5 text-white/90 outline-none transition-colors duration-150 data-[highlighted]:bg-white/8 data-[highlighted]:text-white",
                       children: [
                         /* @__PURE__ */ jsx(LogOut, { className: "h-4 w-4" }),
                         /* @__PURE__ */ jsx("span", { children: "Sair" })
@@ -392,7 +405,7 @@ function Sidebar({ open, onOpenChange }) {
 const fetchUser = createServerFn({
   method: "GET"
 }).handler(createSsrRpc("1f41845ac3b65a581f73e88792eadc03859ad057285ba3f3d7dbd968fe09c1e3"));
-const Route$5 = createRootRouteWithContext()({
+const Route$6 = createRootRouteWithContext()({
   head: () => ({
     meta: [{
       charSet: "utf-8"
@@ -444,7 +457,7 @@ const Route$5 = createRootRouteWithContext()({
 function RootComponent() {
   const {
     initialUser
-  } = Route$5.useRouteContext();
+  } = Route$6.useRouteContext();
   return /* @__PURE__ */ jsx(AuthProvider, { initialUser, children: /* @__PURE__ */ jsx(RootDocument, { children: /* @__PURE__ */ jsx(Outlet, {}) }) });
 }
 function RootDocument({
@@ -464,7 +477,7 @@ function RootDocument({
           /* @__PURE__ */ jsxs("div", { className: "flex min-w-0 flex-1 flex-col", children: [
             /* @__PURE__ */ jsxs("header", { className: "sticky top-0 z-30 flex h-16 items-center justify-between border-b border-white/8 bg-slate-900/12 px-4 backdrop-blur-lg lg:hidden", children: [
               /* @__PURE__ */ jsx("button", { type: "button", onClick: () => setSidebarOpen(true), className: "inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-300 transition-colors hover:bg-slate-800 hover:text-white", "aria-label": "Abrir menu lateral", children: /* @__PURE__ */ jsx(Menu$1, { className: "h-5 w-5" }) }),
-              /* @__PURE__ */ jsx(Link, { to: "/", onClick: () => setSidebarOpen(false), children: /* @__PURE__ */ jsx("img", { src: "./brand/nullspace-logo.svg", alt: "Nullspace Logo", className: "h-8 w-auto" }) }),
+              /* @__PURE__ */ jsx(Link, { to: "/", onClick: () => setSidebarOpen(false), children: /* @__PURE__ */ jsx("img", { src: "/brand/nullspace-logo.svg", alt: "Nullspace Logo", className: "h-8 w-auto" }) }),
               /* @__PURE__ */ jsx("div", { className: "h-10 w-10", "aria-hidden": true })
             ] }),
             /* @__PURE__ */ jsx("main", { className: "flex-1 overflow-y-auto", children: /* @__PURE__ */ jsx("div", { className: cn("mx-auto h-full w-full max-w-7xl", isHome ? "p-0" : "p-4 sm:p-6 lg:p-8"), children }) })
@@ -478,63 +491,86 @@ function RootDocument({
     ] })
   ] });
 }
-const $$splitComponentImporter$3 = () => import("./signup-BknURVLk.js");
+const $$splitComponentImporter$4 = () => import("./signup-CHmzHCk8.js");
 const signupFn = createServerFn({
   method: "POST"
 }).inputValidator((d) => d).handler(createSsrRpc("391e4fddd1127ccfb7d0d44594936a2e78a25b0239ffeab18aa9ec261f329199"));
-const Route$4 = createFileRoute("/signup")({
-  component: lazyRouteComponent($$splitComponentImporter$3, "component")
+const Route$5 = createFileRoute("/signup")({
+  component: lazyRouteComponent($$splitComponentImporter$4, "component")
 });
 const logoutFn = createServerFn().handler(createSsrRpc("566828ec21d0ccdce1df662ede59410e979248719d530394b6aca7f837fe7339"));
-const Route$3 = createFileRoute("/logout")({
+const Route$4 = createFileRoute("/logout")({
   preload: false,
   loader: () => logoutFn()
 });
-const $$splitComponentImporter$2 = () => import("./login-CAfV2z7Z.js");
-const Route$2 = createFileRoute("/login")({
+const $$splitComponentImporter$3 = () => import("./login-vz-U3h-z.js");
+const Route$3 = createFileRoute("/login")({
+  component: lazyRouteComponent($$splitComponentImporter$3, "component")
+});
+const $$splitComponentImporter$2 = () => import("./community-Cd3MGnfg.js");
+const Route$2 = createFileRoute("/community")({
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./community-DZE9SWpI.js");
-const Route$1 = createFileRoute("/community")({
+const $$splitComponentImporter$1 = () => import("./index-i9frxf13.js");
+const Route$1 = createFileRoute("/")({
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./index-DUBz0q4o.js");
-const Route = createFileRoute("/")({
+const $$splitComponentImporter = () => import("./auth.callback-Clt4BVfE.js");
+const callbackSchema = z.object({
+  code: z.string().optional(),
+  next: z.string().optional()
+});
+const oauthCallbackFn = createServerFn({
+  method: "GET"
+}).inputValidator((d) => callbackSchema.parse(d ?? {})).handler(createSsrRpc("41cb0d638bf2811a11f0b4036fc8aefb09fb7dbbe29aca0da3cf350198c14a29"));
+const Route = createFileRoute("/auth/callback")({
+  validateSearch: (search) => callbackSchema.parse(search ?? {}),
+  loader: ({
+    search
+  }) => oauthCallbackFn({
+    data: search
+  }),
   component: lazyRouteComponent($$splitComponentImporter, "component")
 });
-const SignupRoute = Route$4.update({
+const SignupRoute = Route$5.update({
   id: "/signup",
   path: "/signup",
-  getParentRoute: () => Route$5
+  getParentRoute: () => Route$6
 });
-const LogoutRoute = Route$3.update({
+const LogoutRoute = Route$4.update({
   id: "/logout",
   path: "/logout",
-  getParentRoute: () => Route$5
+  getParentRoute: () => Route$6
 });
-const LoginRoute = Route$2.update({
+const LoginRoute = Route$3.update({
   id: "/login",
   path: "/login",
-  getParentRoute: () => Route$5
+  getParentRoute: () => Route$6
 });
-const CommunityRoute = Route$1.update({
+const CommunityRoute = Route$2.update({
   id: "/community",
   path: "/community",
-  getParentRoute: () => Route$5
+  getParentRoute: () => Route$6
 });
-const IndexRoute = Route.update({
+const IndexRoute = Route$1.update({
   id: "/",
   path: "/",
-  getParentRoute: () => Route$5
+  getParentRoute: () => Route$6
+});
+const AuthCallbackRoute = Route.update({
+  id: "/auth/callback",
+  path: "/auth/callback",
+  getParentRoute: () => Route$6
 });
 const rootRouteChildren = {
   IndexRoute,
   CommunityRoute,
   LoginRoute,
   LogoutRoute,
-  SignupRoute
+  SignupRoute,
+  AuthCallbackRoute
 };
-const routeTree = Route$5._addFileChildren(rootRouteChildren)._addFileTypes();
+const routeTree = Route$6._addFileChildren(rootRouteChildren)._addFileTypes();
 const queryClient = new QueryClient();
 const getRouter = () => {
   return routerWithQueryClient(

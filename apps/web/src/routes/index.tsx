@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Vortex } from '~/components/ui/Vortex'
+import { BackgroundBeamsWithCollision } from '~/components/ui/BackgroundBeams'
 
 export const Route = createFileRoute('/')({
   component: Home,
@@ -7,16 +7,7 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   return (
-    <Vortex
-      containerClassName="relative min-h-[calc(100dvh-4rem)] lg:min-h-dvh"
-      className="flex h-full w-full items-center justify-center"
-      backgroundColor="transparent"
-      baseHue={176}
-      rangeHue={24}
-      rangeY={120}
-      particleCount={760}
-      rangeRadius={2.2}
-    >
+    <BackgroundBeamsWithCollision className="relative min-h-[calc(100dvh-4rem)] lg:min-h-dvh">
       <div className="px-4 sm:px-8">
         <h2 className="relative z-20 text-center font-sans text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
           Bem-vindo ao{' '}
@@ -29,10 +20,7 @@ function Home() {
             </div>
           </div>
         </h2>
-        <p className="mt-6 text-center text-base font-medium text-white/80 sm:text-lg">
-          Feito por devs para devs.
-        </p>
       </div>
-    </Vortex>
+    </BackgroundBeamsWithCollision>
   )
 }

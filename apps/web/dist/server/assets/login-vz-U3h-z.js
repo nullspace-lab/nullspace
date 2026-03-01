@@ -1,7 +1,7 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { useRouter } from "@tanstack/react-router";
 import { u as useMutation, a as useServerFn, A as Auth } from "./Auth-D-kx_3qA.js";
-import { c as createSsrRpc, s as signupFn } from "./router-CuoLvJMz.js";
+import { c as createSsrRpc, s as signupFn } from "./router-BXSAFwtv.js";
 import { c as createServerFn } from "../server.js";
 import "react";
 import "@tanstack/react-query";
@@ -17,6 +17,7 @@ import "clsx";
 import "tailwind-merge";
 import "@base-ui/react/dialog";
 import "@tabler/icons-react";
+import "zod";
 import "node:async_hooks";
 import "tiny-invariant";
 import "node:stream";

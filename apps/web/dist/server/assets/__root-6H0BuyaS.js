@@ -1,4 +1,4 @@
-import { c as createServerRpc, g as getSupabaseServerClient } from "./supabase-BeayJ5_X.js";
+import { c as createServerRpc, g as getSupabaseServerClient } from "./supabase-CQZ0guTM.js";
 import { c as createServerFn } from "../server.js";
 import "@supabase/ssr";
 import "node:async_hooks";

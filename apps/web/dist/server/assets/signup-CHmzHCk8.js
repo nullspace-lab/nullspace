@@ -1,6 +1,6 @@
 import { jsx, Fragment } from "react/jsx-runtime";
 import { u as useMutation, a as useServerFn, A as Auth } from "./Auth-D-kx_3qA.js";
-import { s as signupFn } from "./router-CuoLvJMz.js";
+import { s as signupFn } from "./router-BXSAFwtv.js";
 import "react";
 import "@tanstack/react-router";
 import "@tanstack/react-query";
@@ -21,6 +21,7 @@ import "clsx";
 import "tailwind-merge";
 import "@base-ui/react/dialog";
 import "@tabler/icons-react";
+import "zod";
 function SignupComp() {
   const signupMutation = useMutation({
     fn: useServerFn(signupFn)

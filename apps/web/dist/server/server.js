@@ -3912,7 +3912,7 @@ function setCookie$1(event, name, value, options) {
     event.res.headers.set("set-cookie", newCookie);
     return;
   }
-  const newCookieKey = _getDistinctCookieKey(name, {});
+  const newCookieKey = _getDistinctCookieKey(name, options || {});
   event.res.headers.delete("set-cookie");
   for (const cookie of currentCookies) {
     if (_getDistinctCookieKey(cookie.split("=")?.[0], parseSetCookie(cookie)) === newCookieKey) continue;
@@ -4008,7 +4008,7 @@ function getResponse() {
   return event.res;
 }
 async function getStartManifest(matchedRoutes) {
-  const { tsrStartManifest } = await import("./assets/_tanstack-start-manifest_v-Bk50b70C.js");
+  const { tsrStartManifest } = await import("./assets/_tanstack-start-manifest_v-ChG5DDBr.js");
   const startManifest = tsrStartManifest();
   const rootRoute = startManifest.routes[rootRouteId] = startManifest.routes[rootRouteId] || {};
   rootRoute.assets = rootRoute.assets || [];
@@ -4164,16 +4164,19 @@ function createMultiplexedStream(jsonStream, rawStreams) {
 }
 const manifest = { "566828ec21d0ccdce1df662ede59410e979248719d530394b6aca7f837fe7339": {
   functionName: "logoutFn_createServerFn_handler",
-  importer: () => import("./assets/logout-DCgmQLlZ.js")
+  importer: () => import("./assets/logout-B9mDHlAo.js")
 }, "1f41845ac3b65a581f73e88792eadc03859ad057285ba3f3d7dbd968fe09c1e3": {
   functionName: "fetchUser_createServerFn_handler",
-  importer: () => import("./assets/__root-CqANcCCt.js")
+  importer: () => import("./assets/__root-6H0BuyaS.js")
 }, "391e4fddd1127ccfb7d0d44594936a2e78a25b0239ffeab18aa9ec261f329199": {
   functionName: "signupFn_createServerFn_handler",
-  importer: () => import("./assets/signup-DOlLX2rm.js")
+  importer: () => import("./assets/signup-W4WNmyBz.js")
+}, "41cb0d638bf2811a11f0b4036fc8aefb09fb7dbbe29aca0da3cf350198c14a29": {
+  functionName: "oauthCallbackFn_createServerFn_handler",
+  importer: () => import("./assets/auth.callback-DQzk2puH.js")
 }, "d30f677a5605f56175c96ce0a4c22680c841b651708162a6960bc416b12d6533": {
   functionName: "loginFn_createServerFn_handler",
-  importer: () => import("./assets/auth-server-BPijZbiB.js")
+  importer: () => import("./assets/auth-server-CjDMQF7Y.js")
 } };
 async function getServerFnById(id) {
   const serverFnInfo = manifest[id];
@@ -4589,7 +4592,7 @@ let entriesPromise;
 let baseManifestPromise;
 let cachedFinalManifestPromise;
 async function loadEntries() {
-  const routerEntry = await import("./assets/router-CuoLvJMz.js").then((n2) => n2.r);
+  const routerEntry = await import("./assets/router-BXSAFwtv.js").then((n2) => n2.r);
   const startEntry = await import("./assets/start-HYkvq4Ni.js");
   return { startEntry, routerEntry };
 }

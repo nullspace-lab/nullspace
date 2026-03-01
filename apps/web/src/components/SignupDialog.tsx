@@ -4,6 +4,7 @@ import {
   IconBrandLinkedin,
   IconBrandGoogle,
 } from '@tabler/icons-react';
+import { useState } from 'react';
 import { useAuth } from '~/contexts/auth';
 
 export function SignupDialog({
@@ -14,10 +15,19 @@ export function SignupDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const { signInWithGithub } = useAuth();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleGithubSignIn = async () => {
-    signInWithGithub();
-    onOpenChange(false);
+    setIsRedirecting(true);
+
+    const redirectTo = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+
+    const { error } = await signInWithGithub(redirectTo);
+
+    // If redirect doesn't happen (error path), re-enable interaction.
+    if (error) {
+      setIsRedirecting(false);
+    }
   };
 
   return (
@@ -31,11 +41,14 @@ export function SignupDialog({
           <div className="flex flex-col space-y-4">
             <button
               onClick={handleGithubSignIn}
-              className="group relative flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-white/10 bg-slate-900/12 px-4 font-medium text-white transition-colors duration-200 hover:border-ring/70 hover:bg-white/8"
+              disabled={isRedirecting}
+              className="group relative flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-white/10 bg-slate-900/12 px-4 font-medium text-white transition-colors duration-200 hover:border-ring/70 hover:bg-white/8 disabled:cursor-not-allowed disabled:opacity-70"
             >
               <IconBrandGithub className="h-6 w-6 text-neutral-300" />
-              <span className="text-sm text-neutral-300">GitHub</span>
-              <BottomGradient />
+              <span className="text-sm text-neutral-300">
+                {isRedirecting ? 'Redirecionando...' : 'GitHub'}
+              </span>
+              {!isRedirecting ? <BottomGradient /> : null}
             </button>
 
             <button
