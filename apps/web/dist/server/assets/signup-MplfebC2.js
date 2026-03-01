@@ -1,6 +1,6 @@
 import { jsx, Fragment } from "react/jsx-runtime";
 import { u as useMutation, a as useServerFn, A as Auth } from "./Auth-D-kx_3qA.js";
-import { s as signupFn } from "./router-BXSAFwtv.js";
+import { s as signupFn } from "./router-CMVwJG91.js";
 import "react";
 import "@tanstack/react-router";
 import "@tanstack/react-query";

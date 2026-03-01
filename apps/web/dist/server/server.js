@@ -4008,7 +4008,7 @@ function getResponse() {
   return event.res;
 }
 async function getStartManifest(matchedRoutes) {
-  const { tsrStartManifest } = await import("./assets/_tanstack-start-manifest_v-ChG5DDBr.js");
+  const { tsrStartManifest } = await import("./assets/_tanstack-start-manifest_v-D2vlvddf.js");
   const startManifest = tsrStartManifest();
   const rootRoute = startManifest.routes[rootRouteId] = startManifest.routes[rootRouteId] || {};
   rootRoute.assets = rootRoute.assets || [];
@@ -4162,12 +4162,12 @@ function createMultiplexedStream(jsonStream, rawStreams) {
     }
   });
 }
-const manifest = { "566828ec21d0ccdce1df662ede59410e979248719d530394b6aca7f837fe7339": {
-  functionName: "logoutFn_createServerFn_handler",
-  importer: () => import("./assets/logout-B9mDHlAo.js")
-}, "1f41845ac3b65a581f73e88792eadc03859ad057285ba3f3d7dbd968fe09c1e3": {
+const manifest = { "1f41845ac3b65a581f73e88792eadc03859ad057285ba3f3d7dbd968fe09c1e3": {
   functionName: "fetchUser_createServerFn_handler",
   importer: () => import("./assets/__root-6H0BuyaS.js")
+}, "566828ec21d0ccdce1df662ede59410e979248719d530394b6aca7f837fe7339": {
+  functionName: "logoutFn_createServerFn_handler",
+  importer: () => import("./assets/logout-B9mDHlAo.js")
 }, "391e4fddd1127ccfb7d0d44594936a2e78a25b0239ffeab18aa9ec261f329199": {
   functionName: "signupFn_createServerFn_handler",
   importer: () => import("./assets/signup-W4WNmyBz.js")
@@ -4592,7 +4592,7 @@ let entriesPromise;
 let baseManifestPromise;
 let cachedFinalManifestPromise;
 async function loadEntries() {
-  const routerEntry = await import("./assets/router-BXSAFwtv.js").then((n2) => n2.r);
+  const routerEntry = await import("./assets/router-CMVwJG91.js").then((n2) => n2.r);
   const startEntry = await import("./assets/start-HYkvq4Ni.js");
   return { startEntry, routerEntry };
 }

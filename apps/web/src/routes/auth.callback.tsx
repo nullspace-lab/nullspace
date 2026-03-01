@@ -34,7 +34,8 @@ const oauthCallbackFn = createServerFn({ method: 'GET' })
 
 export const Route = createFileRoute('/auth/callback')({
   validateSearch: (search) => callbackSchema.parse(search ?? {}),
-  loader: ({ search }) => oauthCallbackFn({ data: search }),
+  loaderDeps: ({ search }) => callbackSchema.parse(search ?? {}),
+  loader: ({ deps }) => oauthCallbackFn({ data: deps }),
   component: () => (
     <div className="flex min-h-[40vh] items-center justify-center text-sm text-white/70">
       Finalizando login...

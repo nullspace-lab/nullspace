@@ -1,0 +1,1 @@
+import{j as t}from"./main-DRb9Ifqj.js";const n=()=>t.jsx("div",{className:"flex min-h-[40vh] items-center justify-center text-sm text-white/70",children:"Finalizando login..."});export{n as component};

@@ -491,7 +491,7 @@ function RootDocument({
     ] })
   ] });
 }
-const $$splitComponentImporter$4 = () => import("./signup-CHmzHCk8.js");
+const $$splitComponentImporter$4 = () => import("./signup-MplfebC2.js");
 const signupFn = createServerFn({
   method: "POST"
 }).inputValidator((d) => d).handler(createSsrRpc("391e4fddd1127ccfb7d0d44594936a2e78a25b0239ffeab18aa9ec261f329199"));
@@ -503,15 +503,15 @@ const Route$4 = createFileRoute("/logout")({
   preload: false,
   loader: () => logoutFn()
 });
-const $$splitComponentImporter$3 = () => import("./login-vz-U3h-z.js");
+const $$splitComponentImporter$3 = () => import("./login-95GSlUd-.js");
 const Route$3 = createFileRoute("/login")({
   component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const $$splitComponentImporter$2 = () => import("./community-Cd3MGnfg.js");
+const $$splitComponentImporter$2 = () => import("./community-KOtvSTsX.js");
 const Route$2 = createFileRoute("/community")({
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-i9frxf13.js");
+const $$splitComponentImporter$1 = () => import("./index-GVa10t41.js");
 const Route$1 = createFileRoute("/")({
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
@@ -525,10 +525,13 @@ const oauthCallbackFn = createServerFn({
 }).inputValidator((d) => callbackSchema.parse(d ?? {})).handler(createSsrRpc("41cb0d638bf2811a11f0b4036fc8aefb09fb7dbbe29aca0da3cf350198c14a29"));
 const Route = createFileRoute("/auth/callback")({
   validateSearch: (search) => callbackSchema.parse(search ?? {}),
-  loader: ({
+  loaderDeps: ({
     search
+  }) => callbackSchema.parse(search ?? {}),
+  loader: ({
+    deps
   }) => oauthCallbackFn({
-    data: search
+    data: deps
   }),
   component: lazyRouteComponent($$splitComponentImporter, "component")
 });

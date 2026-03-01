@@ -1,6 +1,12 @@
 import { getCookies, setCookie } from '@tanstack/react-start/server'
 import { createServerClient } from '@supabase/ssr'
 
+type ServerCookie = {
+  name: string
+  value: string
+  options?: Parameters<typeof setCookie>[2]
+}
+
 export function getSupabaseServerClient() {
   return createServerClient(
     process.env.SUPABASE_URL!,
@@ -13,7 +19,7 @@ export function getSupabaseServerClient() {
             value,
           }))
         },
-        setAll(cookies) {
+        setAll(cookies: ServerCookie[]) {
           cookies.forEach((cookie) => {
             setCookie(cookie.name, cookie.value, cookie.options)
           })
