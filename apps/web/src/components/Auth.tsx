@@ -12,9 +12,9 @@ export function Auth({
   afterSubmit?: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 bg-slate-800  flex items-center justify-center p-8">
-      <div className="bg-slate-900 p-8 rounded-lg shadow-lg border border-slate-700 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-white text-center">
+    <div className="fixed inset-0 flex items-center justify-center overflow-y-auto bg-slate-800 p-4 sm:p-8">
+      <div className="w-full max-w-md rounded-lg border border-slate-700 bg-slate-900 p-5 shadow-lg sm:p-8">
+        <h1 className="mb-6 text-center text-2xl font-bold text-white">
           {actionText}
         </h1>
         <form
@@ -27,7 +27,7 @@ export function Auth({
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-white mb-2"
+              className="mb-2 block text-sm font-medium text-white"
             >
               E-mail
             </label>
@@ -35,14 +35,14 @@ export function Auth({
               type="email"
               name="email"
               id="email"
-              className="px-3 py-2 w-full rounded-lg border border-slate-700 bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200"
+              className="w-full rounded-lg border border-slate-700 bg-slate-700 px-3 py-2 text-white placeholder-slate-400 transition-colors duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="Digite seu e-mail"
             />
           </div>
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-white mb-2"
+              className="mb-2 block text-sm font-medium text-white"
             >
               Senha
             </label>
@@ -50,13 +50,13 @@ export function Auth({
               type="password"
               name="password"
               id="password"
-              className="px-3 py-2 w-full rounded-lg border border-slate-700 bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200"
+              className="w-full rounded-lg border border-slate-700 bg-slate-700 px-3 py-2 text-white placeholder-slate-400 transition-colors duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="Digite sua senha"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-3 font-medium uppercase tracking-wide transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-lg bg-primary py-3 font-medium uppercase tracking-wide text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={status === 'pending'}
           >
             {status === 'pending' ? 'Carregando...' : actionText}

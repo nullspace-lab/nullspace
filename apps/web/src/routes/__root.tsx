@@ -1,9 +1,11 @@
 /// <reference types="vite/client" />
 import {
   HeadContent,
+  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext,
+  useRouterState,
 } from '@tanstack/react-router';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { QueryClient } from '@tanstack/react-query';
@@ -18,6 +20,8 @@ import { AuthProvider } from '~/contexts/auth';
 import { getSupabaseServerClient } from '~/utils/supabase';
 import { createServerFn } from '@tanstack/react-start';
 import { Sidebar } from '~/components/Sidebar';
+import { Menu } from 'lucide-react';
+import { cn } from '~/utils/tailwind';
 
 const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
   const supabase = getSupabaseServerClient();
@@ -103,18 +107,47 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isHome = pathname === '/';
+
   return (
     <html>
       <head>
         <HeadContent />
       </head>
-      <body>
-        <main className="h-screen flex flex-col min-h-0 root bg-ns-gradient">
-          <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex-1 flex flex-col min-w-0">
-              <main className="flex-1 overflow-auto">
-                <div className="h-full">{children}</div>
+      <body className="min-h-dvh bg-ns-gradient text-foreground">
+        <main className="root min-h-dvh">
+          <div className="flex min-h-dvh">
+            <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
+            <div className="flex min-w-0 flex-1 flex-col">
+              <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-white/8 bg-slate-900/12 px-4 backdrop-blur-lg lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(true)}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+                  aria-label="Abrir menu lateral"
+                >
+                  <Menu className="h-5 w-5" />
+                </button>
+                <Link to="/" onClick={() => setSidebarOpen(false)}>
+                  <img
+                    src="./brand/nullspace-logo.svg"
+                    alt="Nullspace Logo"
+                    className="h-8 w-auto"
+                  />
+                </Link>
+                <div className="h-10 w-10" aria-hidden />
+              </header>
+              <main className="flex-1 overflow-y-auto">
+                <div
+                  className={cn(
+                    'mx-auto h-full w-full max-w-7xl',
+                    isHome ? 'p-0' : 'p-4 sm:p-6 lg:p-8',
+                  )}
+                >
+                  {children}
+                </div>
               </main>
             </div>
           </div>

@@ -1,7 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { Login } from '../components/Login'
-import { getSupabaseServerClient } from '../utils/supabase'
+import { getSupabaseServerClient } from './supabase'
 
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator((d: { email: string; password: string }) => d)
@@ -19,18 +17,3 @@ export const loginFn = createServerFn({ method: 'POST' })
       }
     }
   })
-
-export const Route = createFileRoute('/_authed')({
-  beforeLoad: ({ context }) => {
-    if (!context.initialUser) {
-      throw new Error('Not authenticated')
-    }
-  },
-  errorComponent: ({ error }) => {
-    if (error.message === 'Not authenticated') {
-      return <Login />
-    }
-
-    throw error
-  },
-})
