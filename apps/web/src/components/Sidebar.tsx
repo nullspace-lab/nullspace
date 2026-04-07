@@ -147,7 +147,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
               </li>
             </ul>
 
-            {!user && (
+            {/* {!user && (
               <div className="mt-4 border-t border-white/8 pt-4">
                 <button
                   type="button"
@@ -161,7 +161,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                   <span className="uppercase">Entrar</span>
                 </button>
               </div>
-            )}
+            )} */}
           </nav>
         </div>
       </aside>
