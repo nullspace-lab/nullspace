@@ -35,12 +35,12 @@ Please read through our [contributing guide](./CONTRIBUTING.md) before starting 
 
 ## 💻 Let's talk
 
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/eYAVxJRM)
+
 ## 💪 Thanks to all of our contributors
 
-Thanks a lot for spending your time helping Recy Network grow. Keep rocking 🌍
+Thanks a lot for spending your time helping Nullspace grow. Keep rocking 🌍
 
-<a href="">
-  <img src="" />
+<a href="https://github.com/nullspace-lab/nullspace/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=nullspace-lab/nullspace" />
 </a>
-
-## 📊 Stats
