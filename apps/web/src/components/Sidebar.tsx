@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { Menu } from '@base-ui/react/menu';
 import { Avatar } from '@base-ui/react/avatar';
-import { ChevronUp, Home, LogIn, LogOut, Users, X } from 'lucide-react';
+import { ChevronUp, Home, LogOut, Users, X } from 'lucide-react';
 import * as React from 'react';
 import { cn } from '~/utils/tailwind';
 import { SignupDialog } from './SignupDialog';
@@ -146,22 +146,6 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                 </Link>
               </li>
             </ul>
-
-            {!user && (
-              <div className="mt-4 border-t border-white/8 pt-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpenAuthDialog(true);
-                    closeSidebar();
-                  }}
-                  className="flex w-full items-center justify-center space-x-3 rounded-lg border border-white/15 bg-transparent px-3 py-2 text-white/90 transition-all duration-200 hover:border-white/25 hover:bg-white/6 hover:text-white"
-                >
-                  <LogIn className="h-5 w-5" />
-                  <span className="uppercase">Entrar</span>
-                </button>
-              </div>
-            )}
           </nav>
         </div>
       </aside>
