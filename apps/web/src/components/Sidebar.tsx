@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { Menu } from '@base-ui/react/menu';
 import { Avatar } from '@base-ui/react/avatar';
-import { ChevronUp, Home, LogIn, LogOut, Users, X } from 'lucide-react';
+import { ChevronUp, Home, LogOut, Users, X } from 'lucide-react';
 import * as React from 'react';
 import { cn } from '~/utils/tailwind';
 import { SignupDialog } from './SignupDialog';
